@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project template="" rstoxversion="" xmlns="http://www.imr.no/formats/stox/v1" lastmodified="19/04/18 11:50" rversion="" stoxversion="" resourceversion="1.78">
+  <model name="baseline">
+    <process name="ReadProcessData">
+      <function>ReadProcessData</function>
+      <enabled>true</enabled>
+      <respondingui>false</respondingui>
+      <breakingui>false</breakingui>
+      <output>ProcessData</output>
+    </process>
+    <process name="ReadBioticXML">
+            <function>ReadBioticXML</function>
+            <enabled>true</enabled>
+            <respondingui>false</respondingui>
+            <breakingui>false</breakingui>
+            <fileoutput>false</fileoutput>
+            <parameter name="FileName1">input/biotic/biotic_cruiseNumber_2018836_Helmer+Hanssen.xml</parameter>
+            <output>BioticData</output>
+    </process>
+    <process name="FilterBiotic">
+            <function>FilterBiotic</function>
+            <enabled>true</enabled>
+            <respondingui>true</respondingui>
+            <breakingui>false</breakingui>
+            <fileoutput>false</fileoutput>
+            <parameter name="BioticData">Process(ReadBioticXML)</parameter>
+            <output>BioticData</output>
+    </process>
+    <process name="WriteProcessData">
+      <function>WriteProcessData</function>
+      <enabled>true</enabled>
+      <respondingui>false</respondingui>
+      <breakingui>false</breakingui>
+      <fileoutput>false</fileoutput>
+      <output>ProcessData</output>
+    </process>
+  </model>
+  <model name="r">
+    <process name="runBootstrap">
+      <function>runBootstrap</function>
+      <enabled>true</enabled>
+      <respondingui>false</respondingui>
+      <breakingui>false</breakingui>
+      <parameter name="bootstrapMethod">AcousticTrawl</parameter>
+      <parameter name="acousticMethod">PSU~Stratum</parameter>
+      <parameter name="bioticMethod">PSU~Stratum</parameter>
+      <parameter name="startProcess">Process(TotalLengthDist)</parameter>
+      <parameter name="endProcess">Process(SuperIndAbundance)</parameter>
+      <parameter name="nboot">5</parameter>
+      <parameter name="seed">1</parameter>
+      <parameter name="cores">1</parameter>
+      <output>RObject</output>
+    </process>
+    <process name="imputeByAge">
+      <function>imputeByAge</function>
+      <enabled>true</enabled>
+      <respondingui>false</respondingui>
+      <breakingui>false</breakingui>
+      <parameter name="seed">1</parameter>
+      <parameter name="cores">1</parameter>
+    </process>
+    <process name="saveProjectData">
+      <function>saveProjectData</function>
+      <enabled>true</enabled>
+      <respondingui>false</respondingui>
+      <breakingui>false</breakingui>
+    </process>
+  </model>
+  <model name="baseline-report">
+    <process name="FillMissingData">
+      <function>FillMissingData</function>
+      <enabled>true</enabled>
+      <respondingui>false</respondingui>
+      <breakingui>false</breakingui>
+      <fileoutput>true</fileoutput>
+      <parameter name="SuperIndividuals">Process(SuperIndAbundance)</parameter>
+      <parameter name="FillVariables">ImputeByAge</parameter>
+      <parameter name="Seed">1</parameter>
+      <parameter name="FillWeight">Mean</parameter>
+      <parameter name="a">0.01</parameter>
+      <parameter name="b">3.0</parameter>
+      <output>SuperIndividuals</output>
+    </process>
+    <process name="EstimateByPopulationCategory">
+      <function>EstimateByPopulationCategory</function>
+      <enabled>true</enabled>
+      <respondingui>false</respondingui>
+      <breakingui>false</breakingui>
+      <fileoutput>true</fileoutput>
+      <parameter name="SuperIndividuals">Process(FillMissingData)</parameter>
+      <parameter name="LengthInterval">1.0</parameter>
+      <parameter name="Scale">1000</parameter>
+      <parameter name="Dim1">LenGrp</parameter>
+      <parameter name="Dim2">age</parameter>
+      <parameter name="Dim3">SpecCat</parameter>
+      <parameter name="Dim4">none</parameter>
+      <parameter name="Dim5">none</parameter>
+      <output>Reports</output>
+    </process>
+  </model>
+  <model name="r-report">
+    <process name="getReports">
+      <function>getReports</function>
+      <enabled>true</enabled>
+      <respondingui>false</respondingui>
+      <breakingui>false</breakingui>
+      <parameter name="out">all</parameter>
+    </process>
+    <process name="getPlots">
+      <function>getPlots</function>
+      <enabled>true</enabled>
+      <respondingui>false</respondingui>
+      <breakingui>false</breakingui>
+      <parameter name="out">all</parameter>
+    </process>
+  </model>
+  <processdata>
+    <bioticassignment>
+    </bioticassignment>
+    <suassignment>
+    </suassignment>
+    <assignmentresolution>
+    </assignmentresolution>
+    <edsupsu>
+    </edsupsu>
+    <psustratum>
+    </psustratum>
+    <stratumpolygon>
+    </stratumpolygon>
+    <temporal>
+    </temporal>
+    <gearfactor>
+    </gearfactor>
+    <spatial>
+    </spatial>
+    <ageerror>
+    </ageerror>
+    <stratumneighbour>
+    </stratumneighbour>
+  </processdata>
+</project>

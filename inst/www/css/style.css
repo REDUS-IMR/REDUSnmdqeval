@@ -1,0 +1,51 @@
+#statusLine {
+  display: none;
+  color: #555;
+  background-color: #eee;
+  border: 1px inset;
+  padding: 2px 4px;
+  margin: 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#panel{
+  display: none;
+}
+
+#loadDataInfo{
+  display: none;
+}
+
+#matrixLoading {
+  display: none;
+}
+
+#detailed {
+  display: none;
+}
+
+span.fancytree-title {
+    white-space: normal;
+}
+
+.list-group-hover .list-group-item:hover {
+    background-color: #f5f5f5;
+}
+
+.addshadow{
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+}
+ 
+td.empty {
+   background-color:#F5F5F5;
+}
+td.equal {
+   color: green;
+}
+td.nequal, a.xPop {
+   color: red;
+}

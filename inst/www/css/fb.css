@@ -1,0 +1,21 @@
+/* Adapted from https://github.com/sumitchawla/file-browser */
+
+#FBpanel .mainpanel { height:90%;min-height:400px;}
+
+#FBpanel .linksholder ul { list-style-type: none; }
+
+#FBpanel .linksholder li { font-size: 16px; line-height: 1.5em;}
+
+#FBpanel .linksholder li .fa { margin-right: 5px; }
+
+#FBpanel .linksholder a { color : black;}
+
+#FBpanel .linksholder .fa { color: black;}
+
+#FBpanel .dataTables_filter label { float: right; font-weight:normal; }
+
+#FBpanel .dataTables_info { margin-top: 10px; background: ghostwhite; }
+
+#FBpanel table tr.selected{background-color: #acbad4;}
+
+#FBpanel .up { margin-left: 20px; border:solid 1px black; cursor:pointer; width:100px; padding-left: 10px; padding-right:10px; }

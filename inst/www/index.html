@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IMR Echosounder Comparison Engine</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/solid.css" integrity="sha384-aj0h5DVQ8jfwc8DA7JiM+Dysv7z+qYrFYZR+Qd/TwnmpDI6UaB3GJRRTdY8jYGS4" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/fontawesome.css" integrity="sha384-WK8BzK0mpgOdhCxq86nInFqSWLzR5UAsNg0MGX9aDaIIrFWQ38dGdhwnNCAoXFxL" crossorigin="anonymous">  
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+  <link href="//cdn.jsdelivr.net/gh/mar10/fancytree@v2/dist/skin-win8/ui.fancytree.min.css" rel="stylesheet" />
+  <link href="css/style.css" rel="stylesheet" />
+  <link href="css/reports.css" rel="stylesheet" />
+  <link href="css/fb.css" rel="stylesheet" />
+  <script src="//code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/opencpu-browser@0.5.0-alpha/opencpu.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/mar10/fancytree@v2/dist/jquery.fancytree-all-deps.min.js"></script>
+  <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <script src="//cdn.datatables.net/plug-ins/1.10.16/api/processing().js"></script>
+  <script src="js/treeGen.js"></script>
+  <script src="js/fb.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1 class="display-2">Echosounder Data Comparator</h1>
+    </div>
+    <div class="col-xs-auto">
+  	<img src="sea2data.png" style="width:100px" class="p-1" alt="Sea2Data">
+	<img src="redus.jpg" style="width:100px"class="p-1 rounded-circle" alt="REDUS">
+   </div>
+  </div>
+  <div class="row addshadow">
+    <div id="tree" class="p-2 col-xs">
+      <h2>Select a cruise</h2>
+      <div id="statusLine">&nbsp;</div>
+    </div>
+
+    <div id="loadDataInfo" class="p-2 col-lg align-items-center h-100">
+	<button class="btn btn-outline-info btn-lg btn-block"><i class="fas fa-circle-notch fa-spin"></i> Loading file list. Please wait...</button>
+    </div>
+
+    <div id="panel" class="p-2 col-lg">
+      <h2 style="text-align: center"><span id="cruise"></span>&nbsp;</h2>
+      <h3>File list</h3>
+      <div id="fileList" class="list-group-hover list-group mb-2">&nbsp;</div>
+      <h3>Add user file</h3>
+      <form class="mb-2">
+	<div class="form-row">
+	<div class="col">
+	  <label for="selectFileInput">File name</label>
+	  <input type="text" class="form-control" id="selectFileInput" placeholder="" disabled>
+	</div>
+	<div class="d-flex align-items-end col-xm">
+          <button id="selectFileBtn" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#filepickModal">Select file(s)</button>
+	</div>
+	<div class="col-xm">
+	  <label for="typeFileInput">File Type</label>
+	  <select id="typeFileInput" class="form-control">
+            <option selected>LUF20</option>
+            <option>LUF05</option>
+	    <option>LUF03</option>
+          </select>
+	</div>
+	<div class="d-flex align-items-end col-xm">
+	  <button id="saveFileBtn" type="button" class="btn btn-primary">Save selection</button>
+	</div>
+	</div>
+      </form>
+      <h3>Difference matrix</h3>
+      <p>Click on the <i style="color:red" class="fa fa-times-circle" aria-hidden="true"></i> icon to see detailed comparison (in CSV)</p>
+      <button id="matrixLoading" class="btn btn-info btn-lg btn-block"><i class="fas fa-circle-notch fa-spin"></i> Comparing files. Please wait... </button>
+      <div id="rdiff"></div>
+      <div id="detailed">
+	      <h3>Detailed comparison</h3>
+	      <h4>In R (<span id="rdiffHeader"></span>)</h4>
+              <div id="rdiffText"></div>
+	      <h4>In XML (<span id="xdiffHeader"></span>)</h4>
+              <div id="xdiffText"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-md-center">
+    <div class="pt-3 col-sm-auto">
+	&copy; 2017-2018 Havforskningsinstituttet. A part of <a target="_blank" href="http://www.redus.no">REDUS</a> project 
+	and <a target="_blank" href="https://www.hi.no/forskning/prosjekter/sea2data_1">SEA2DATA</a> project. 
+	Responsible scientist: <a target="_blank" href="https://www.hi.no/hi/om-oss/ansatte/espen-johnsen">Espen Johnsen</a>.
+	Developer: <a target="_blank" href="https://www.hi.no/hi/om-oss/ansatte/ibrahim-umar">Ibrahim Umar</a>.
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="filepickModal" tabindex="-1" role="dialog" aria-labelledby="filepickModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filepickModalLabel">File picker</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	<div>Use this file browser to select the files that you want to add. You may select multiple files by clicking on them.
+	     Click on the close button when you are finished with the file selection.</div>
+	<div id="FBpanel" class="panel panel-default mainpanel">
+	   <div class="panel-body">
+		<table class="linksholder">
+		</table>
+	   </div>
+	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

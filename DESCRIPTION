@@ -1,0 +1,12 @@
+Package: nmdqeval
+Type: Package
+Title: NMD Data Quality Assessment
+Version: 0.1
+Date: 2017-11-07
+Author: Ibrahim Umar
+Maintainer: Ibrahim Umar <ibrahim.umar@hi.no>
+Description: OpenCPU app for comparing the acoustic and biotic data from NMD database at IMR Norway.
+License: LGPL-3
+Imports:
+    Rstox,rJava,REDUStools,lubridate,xml2,XML,dplyr,flock,git2r,httr,knitr,stringr,jsonlite
+RoxygenNote: 6.1.1
